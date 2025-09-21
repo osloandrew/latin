@@ -139,7 +139,7 @@ function filterResultsByCEFR(results, selectedCEFR) {
 function formatGender(gender) {
   if (!gender) return "";
   const g = gender.toLowerCase().trim();
-  const esNounMarkers = ["noun", "masculine", "feminine"];
+  const esNounMarkers = ["noun", "masculine", "feminine", "neuter"];
   const norNounMarkers = ["en", "et", "ei", "en-et", "en-ei-et"];
 
   if (esNounMarkers.some((m) => g === m)) {
@@ -155,7 +155,7 @@ function formatGender(gender) {
 function formatGender(gender) {
   if (!gender) return "";
   const g = gender.toLowerCase().trim();
-  const esNounMarkers = ["noun", "masculine", "feminine"];
+  const esNounMarkers = ["noun", "masculine", "feminine", "neuter"];
   const norNounMarkers = ["en", "et", "ei", "en-et", "en-ei-et"];
 
   if (g === "noun") return "noun";
@@ -1398,11 +1398,13 @@ function displaySearchResults(results, query = "") {
       "noun",
       "masculine",
       "feminine",
+      "neuter",
       "m",
       "f",
       "m/f",
       "noun - masculine",
       "noun - feminine",
+      "noun - neuter",
     ];
 
     const isNoun = NOUN_MARKERS.some((m) => g.includes(m));
