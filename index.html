@@ -6,34 +6,34 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <title>Spanish Dictionary | Search in Spanish or English</title>
+    <title>Latin Dictionary | Search in Latin or English</title>
 
     <!-- Meta Description -->
     <meta
       name="description"
-      content="Spanish Dictionary is your resource for finding words in both Spanish and English. Search, filter by part of speech, and discover new words."
+      content="Latin Dictionary is your resource for finding words in both Latin and English. Search, filter by part of speech, and discover new words."
     />
 
     <!-- Meta Keywords -->
     <meta
       name="keywords"
-      content="Spanish dictionary, Spanish to English, English to Spanish, word search, language learning, part of speech filter, random words"
+      content="Latin dictionary, Latin to English, English to Latin, word search, language learning, part of speech filter, random words"
     />
 
     <!-- Open Graph for Social Media Sharing -->
     <meta
       property="og:title"
-      content="Spanish Dictionary | Search in Spanish or English"
+      content="Latin Dictionary | Search in Latin or English"
     />
     <meta
       property="og:description"
-      content="Use the Spanish Dictionary to find translations and definitions for words in Spanish and English."
+      content="Use the Latin Dictionary to find translations and definitions for words in Latin and English."
     />
     <meta
       property="og:image"
       content="Resources/Icons/android-chrome-512x512.png"
     />
-    <meta property="og:url" content="https://osloandrew.github.io/Spanish/" />
+    <meta property="og:url" content="https://osloandrew.github.io/Latin/" />
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
@@ -87,10 +87,8 @@
 
   <body>
     <header>
-      <h1 id="site-title" onclick="returnToLandingPage()">
-        Spanish Dictionary
-      </h1>
-      <p id="site-subtitle">Search in Spanish or English</p>
+      <h1 id="site-title" onclick="returnToLandingPage()">Latin Dictionary</h1>
+      <p id="site-subtitle">Search in Latin or English</p>
     </header>
 
     <div id="sticky-header" class="hidden">
@@ -218,7 +216,7 @@
                 id="search-bar"
                 placeholder=" "
                 onkeydown="handleKey(event)"
-                aria-label="Search for Spanish or English words"
+                aria-label="Search for Latin or English words"
               />
               <button
                 id="clear-btn"
@@ -257,10 +255,10 @@
       <div id="landing-card" class="definition">
         <h2>
           Welcome to the <br />
-          Spanish Dictionary
+          Latin Dictionary
         </h2>
         <p style="text-align: center">
-          Explore Spanish vocabulary interactively. <br />
+          Explore Latin vocabulary interactively. <br />
           Click on one of the buttons below to get started.
         </p>
 
@@ -291,7 +289,7 @@
             <p>Explore real sentences in context using your chosen words.</p>
           </div>
 
-          <!-- Spanish Stories Button -->
+          <!-- Latin Stories Button -->
           <div class="button-container">
             <img
               class="landing-card-image"
@@ -299,7 +297,7 @@
               alt="Stories"
             />
             <button class="landing-card-btn" onclick="selectType('stories')">
-              Spanish Stories
+              Latin Stories
             </button>
             <p>
               Immerse yourself in fiction and non-fiction to deepen your
@@ -337,7 +335,7 @@
             >
               Pronunciation Guide
             </button>
-            <p>Perfect your pronunciation by learning Spanish sounds.</p>
+            <p>Perfect your pronunciation by learning Latin sounds.</p>
           </div>
 
           <!-- Support Button -->
@@ -363,7 +361,7 @@
         </div>
 
         <div class="pronunciation-wrapper hidden">
-          <h3>Spanish Pronunciation Guide for English Speakers</h3>
+          <h3>Latin Pronunciation Guide for English Speakers</h3>
           <p>
             Spanish has five steady vowel phonemes and a small set of mostly
             consistent consonant patterns. This guide uses IPA and notes major
@@ -707,11 +705,12 @@
           <option value="">Other Languages</option>
           <option value="hebrew">Hebrew</option>
           <option value="japanese">Japanese</option>
+          <option value="latin">Latin</option>
           <option value="norwegian">Norwegian</option>
           <option value="spanish">Spanish</option>
         </select>
       </div>
-      <p class="copyright">© 2025 Spanish Dictionary</p>
+      <p class="copyright">© 2025 Latin Dictionary</p>
     </footer>
     <script>
       // Language site switcher -> navigates to https://osloandrew.github.io/{slug}/
