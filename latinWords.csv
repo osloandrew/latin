@@ -2,6 +2,7 @@ anglice,CEFR,genus,verbum,definitio,exemplum,interpretatio
 abortion,C,feminine,abortio,Interruptio graviditatis.,Abortio in disputationibus medicis saepe memoratur.,Abortion is often mentioned in medical debates.
 to,A1,preposition,ad,Motum vel intentionem versus aliquid indicat.,Ad villam eo.,I go to the house.
 unite,C,verb,"aduno, adunare",Plures in unum colligere.,Cives se adunare volunt ad libertatem defendendam.,The citizens wish to unite to defend freedom.
+sick,A2,adjective,aeger,Qui valetudo mala afficitur.,Puer aeger in lecto manet.,The sick boy stays in bed.
 screen,B2,neuter,album ,Tabula alba in qua scribitur aut pingitur.,Album imagines discipulorum continet.,The album contains pictures of the students.
 bitter,B1,adjective,amarus,Qui acrem aut asperum saporem habet.,Amarus cibus dentes laedit.,Bitter food harms the teeth.
 friend,A1,masculine,amicus,Vir aut femina carus et fidus.,Amicus hic est.,The friend is here.
@@ -14,6 +15,7 @@ animal,A2,neuter,animal,Animal vivum quod sentit et movetur.,In silva vivit anim
 "soul, heart",A1,masculine,animus,Pars hominis quae cogitat et sentit.,Animus meus laetus est.,My soul is happy.
 year,A1,masculine,annus,Tempus duodecim mensium.,Annus novus venit.,The new year comes.
 water,A1,feminine,aqua,Liquor qui fluit et bibitur.,Aqua frigida est.,The water is cold.
+or,A1,conjunction,aut,Particula quae alteram rem ponit excludens aliam.,Panem aut aquam habeo.,I have bread or water.
 "car, automobile",C,feminine,autoraeda,Vehiculum quod homines portat.,Autoraeda per vias urbanas celeriter currit.,The automobile runs quickly through the city streets.
 well,A1,adverb,bene,Modo bono vel recto.,Puer bene cantat.,The boy sings well.
 benefit,B2,verb,"benefacio, benefacere",Aliquid bonum efficere pro altero.,Civis patriam beneficio suo benefacit.,A citizen benefits his country by his service.
@@ -70,8 +72,10 @@ electronic,C,adjective,electronicus,Ad instrumenta electronica pertinens.,Instru
 go,A1,verb,"eo, ire",De uno loco in alium ire.,Romam eo.,I go to Rome.
 "err, make a mistake",A1,verb,"erro, errare",Falso agere vel putare.,Erro saepe.,I often make mistakes.
 error,A2,masculine,error,Falsa opinio aut peccatum mentis.,Magister errorem videt.,The teacher sees the error.
+and,A1,conjunction,et,Particula quae res coniungit.,Puella et puer currunt.,The girl and the boy run.
 from,A1,preposition,ex,De loco aliquo exire.,Ex urbe venio.,I come from the city.
 example,A2,neuter,exemplum,Res quae ad imitandum datur.,Discipulus ex exemplo discit.,The student learns from an example.
+exsist,B2,verb,"exsisto, exsistere",Manifestari aut fieri incipere.,Hostis subito exsistit ex silva.,The enemy suddenly emerges from the forest.
 story,A1,feminine,fabula,Narratio rerum fictarum vel verarum.,Fabula longa est.,The story is long.
 do,A1,verb,"facio, facere",Aliquid efficere aut parare.,Multa facio.,I do many things.
 fact,A2,neuter,factum,Id quod factum est.,Hoc factum clarum est.,This fact is famous.
@@ -96,13 +100,14 @@ heavy,A2,adjective,gravis,Qui magnum pondus habet.,Saxum grave est.,The stone is
 have,A1,verb,"habeo, habere",Rem possidere vel tenere.,Librum habeo.,I have a book.
 "live, reside",A1,verb,"habito, habitare",In loco certo vitam agere.,In villa habito.,I live in the villa.
 grass,A2,feminine,herba,Herba viridis quae in terra crescit.,Agri plenae sunt herba.,The fields are full of grass.
-here,A1,adverb,hic,In hoc loco.,Hic sedeo.,I sit here.
 this,A1,adjective,hic,Is qui prope est.,Hic puer venit.,This boy comes.
+here,A1,adverb,hic,In hoc loco.,Hic sedeo.,I sit here.
 history,B1,feminine,historia,Narratio rerum praeteritarum.,Historia antiqua a magistris narratur.,Ancient history is told by the teachers.
 "historic, historical",B2,adjective,historicus,Quod ad res priscas pertinet.,Liber historicus bella antiqua narrat.,The historical book tells of ancient wars.
 "person, human being",A1,masculine,homo,Animal rationale.,Homo vivit.,The human lives.
 garden,A2,masculine,hortus,Locus ubi flores et arbores coluntur.,Hortus rosas habet.,The garden has roses.
 already,A1,adverb,iam ,Iam antea factum.,Iam adsum.,I am already present.
+it,A1,pronoun,id,Res neutra quae monstratur vel significatur.,Id mihi placet.,That pleases me.
 idea,B2,feminine,idea,Cogitatio mentis nova.,Idea nova ingenii fulget.,A new idea shines with genius.
 immobile,B2,adjective,immobilis,Qui moveri non potest.,Statua immobilis in foro stat.,A motionless statue stands in the forum.
 importance,C,feminine,importantia,Magnitudo rei.,Res publica magnam importantiam habet.,The state has great importance.
@@ -111,6 +116,7 @@ infinity,C,feminine,infinitas,Sine fine aut termino.,Infinitas caeli mentem supe
 "weak, sick",A2,adjective,infirmus,Qui viribus caret aut aegrotat.,Aeger vir est infirmus.,The sick man is weak.
 "cut into, cut up",C,verb,"inseco, insecare",Partes ferro dividere.,Anatomus corpus insecat ad discendum.,An anatomist cuts into the body for learning.
 insect,B2,neuter,insectum,Animal parvum sex pedum.,Insectum humi currit.,An insect runs on the ground.
+instrument,B1,neuter,instrumentum,Res qua opus fit ad aliquid efficiendum.,Agricola instrumentum ad terram colendam portat.,The farmer carries a tool for cultivating the land.
 intelligence,B2,masculine,intellectus,Vis mentis recte intellegentis.,Intellectus hominis artes excogitat.,The intelligence of man invents arts.
 between,A1,preposition,inter,Spatium quod duobus rebus stat.,Inter amicos sedeo.,I sit among friends.
 international,C,preposition,internationalis,Ad plures gentes pertinens.,Foedus internationale pacem tuetur.,An international treaty protects peace.
@@ -119,8 +125,8 @@ international,C,preposition,internationalis,Ad plures gentes pertinens.,Foedus i
 be between,B2,verb,"intersum, interesse",Inter duas res positum esse.,Consiliis intersum magistratuum.,I take part in the counsels of the magistrates.
 milk,A1,neuter,lac,Liquor albus ex animalibus.,Lac bibo.,I drink milk.
 legal,C,preposition,legalis,Quod secundum legem est.,Lex legalis in foro recitatur.,A legal law is recited in the forum.
-free,A1,preposition,liber,Qui nulli subiectus est.,Vir liber est.,The man is free.
 book,A1,masculine,liber,Scriptum chartis ligatum.,Liber in mensa est.,The book is on the table.
+free,A1,preposition,liber,Qui nulli subiectus est.,Vir liber est.,The man is free.
 freedom,A2,feminine,libertas,Status sine servitute.,Populus Romanus amat libertatem.,The Roman people love freedom.
 "bookcase, library",B2,neuter,librarium,Locus ubi libri servantur.,Librarium multa volumina habet.,The library contains many volumes.
 threshold,B2,neuter,limen,Initium aut finis domus vel loci.,Limen templi flores decorant.,The threshold of the temple is decorated with flowers.
@@ -128,6 +134,7 @@ limit,B2,masculine,limes,Terminus qui fines dirimit.,Limes inter agros disputatu
 limit,C,verb,"limito, limitare",Terminos imponere.,Agricola fines agri limitat.,The farmer sets the boundaries of the field.
 sideways,C,preposition,limus,In latus conversus.,Navis limus vento trahitur.,A sideways ship is dragged by the wind.
 "tongue, language",A1,feminine,lingua,Pars oris et instrumentum loquendi.,Lingua Latina est.,The Latin language exists.
+place,A1,masculine,locus,Spatium ubi res est.,Locus pulcher est.,The place is beautiful.
 speak,A2,verb,"loquor, loqui",Verba ore proferre.,Orator bene loquitur.,The orator speaks well.
 shine,B2,verb,"luceo, lucere",Clare lucem emittere.,Stellae nocte lucent et luceo parvus ignis.,Stars shine at night and a small fire glows.
 bright,B2,preposition,lucidus,Qui splendorem praebet.,Dies lucidus animos recreat.,A bright day refreshes spirits.
@@ -176,6 +183,7 @@ pillar,B2,feminine,pila,Columna sustinens.,Pila marmorea templum sustinet.,A mar
 plant,B2,verb,"planto, plantare",Arbores aut herbas serere.,Agricola arbores novas plantat.,The farmer plants new trees.
 population,C,feminine,populatio,Multitudo hominum in uno loco.,Populatio urbis celeriter crescit.,The population of the city grows quickly.
 people,A1,masculine,populus,Multitudo hominum in uno loco.,Populus clamat.,The people shout.
+portion,B2,feminine,portio,Pars minor alicuius totius.,Parva portio cibi reliqua est.,A small portion of food remains.
 can,A1,verb,"possum, posse",Posse aliquid facere vel efficere.,Currere possum.,I am able to run.
 drinkable,B2,adjective,potabilis,Aqua quae tuto bibi potest.,Aqua potabilis fonte fluit.,Drinkable water flows from the spring.
 power,B2,feminine,potentia,Vis qua agere potest.,Potentia regis late patet.,The power of the king extends widely.
@@ -243,20 +251,23 @@ city,A1,feminine,urbs,Locus magnus ubi multi habitant.,Urbs magna est.,The city 
 that,A1,,ut,Indicium causae vel finis.,Dico ut facias.,I say so that you may do.
 "be strong, be valid",A2,verb,"valeo, valere",Magna vi et sanitate uti.,Post morbum iterum valeo.,After illness I am strong again.
 "strong, valid",A2,adjective,validus,Qui validam vim habet.,Miles validus arma fert.,The strong soldier carries weapons.
+steam,B2,masculine,vapor,Aer calidus qui ex liquido surgit.,Vapor ex aqua fervente oritur.,Steam rises from boiling water.
 various,A2,adjective,varius,Multa et diversa ostendens.,In foro sunt homines varii.,In the forum there are various people.
 vehicle,B1,neuter,vehiculum,Instrumentum quod homines aut res portat.,Vehiculum equis trahitur per viam.,The vehicle is drawn by horses along the road.
 carry,A2,verb,"veho, vehere",Onus in curru aut nave portare.,Mercator merces in navem vehit.,The merchant carries goods into the ship.
+"or, even",A2,conjunction,vel,"Particula quae alteram rem ponit, etiam utramque sinit.",Magister librum vel tabulam legere iubet.,The teacher orders us to read a book or a tablet.
 come,A1,verb,"venio, venire",De loco alieno ad hunc locum venire.,Romam venio.,I come to Rome.
 word,A1,neuter,verbum ,Vox quae sensum exprimit.,Verbum dico.,I speak a word.
 truth,A2,feminine,vertitas,Id quod verum est.,Philosophus semper amat veritatem.,The philosopher always loves the truth.
 "true, real",A1,adjective,verus,Qui sine mendacio est.,Verus amicus est.,He is a true friend.
 undertaker,C,masculine,vespillo ,Is qui mortuos sepelit.,Vespillo corpora nocte portat.,The undertaker carries bodies at night.
 see,A1,verb,"video, videre",Oculis intueri.,Te video.,I see you.
-"win, conquer",A1,verb,"vinco, vincere",Hostem superare aut vincere.,Hostem vinco.,I conquer the enemy.
+"win, conquer",A1,verb,"vinco, vincere",Hostem superare aut maiorem vim habere.,Hostem vinco.,I conquer the enemy.
 man,A1,masculine,vir,Masculus adultus.,Vir fortis est.,The man is brave.
 manly,A2,adjective,virilis,Qui virum decet.,Miles virilis est.,The soldier is manly.
 "manliness, virtue",A2,feminine,virtus,Virtus animi et fortitudo.,Virtus magna est in virtute Romana.,Great strength is in Roman virtue.
 life,A1,feminine,vita,Spatium vitae hominis aut animalis.,Vita bona est.,Life is good.
-vital,B2,adjective,vitalis,Ad vitam necessarius.,Aqua vitalis corpori necessaria est.,Vital water is necessary for the body.
+vital,B2,adjective,vitalis,Ad vitam necessarius.,Aqua est pars vitalis vitae humanae.,Water is a vital part of human life.
 live,A1,verb,"vivo, vivere",Spiritum ducere et vitam agere.,Vivo bene.,I live well.
-"want, wish",A1,verb,"volo, velle",Optare aut desiderare.,Voluntatem habeo.,I have the wish.
+"want, wish",A1,verb,"volo, velle",Optare aut desiderare.,Volo ludere.,I want to play.
+voice,A1,feminine,vox,Sonus a ore hominis vel animali profectus.,Vox clara auditur.,A clear voice is heard.
