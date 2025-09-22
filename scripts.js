@@ -465,45 +465,23 @@ function generateInexactMatches(query) {
     // plurals
     "s",
     "es",
-    // adverbs
-    "mente",
-    // adjective gender/number
-    "o",
-    "a",
-    "os",
-    "as",
-    // common diminutives
-    "ito",
-    "ita",
-    "itos",
-    "itas",
-    // participles and gerunds
-    "ado",
-    "ada",
-    "ados",
-    "adas",
-    "ido",
-    "ida",
-    "idos",
-    "idas",
-    "ando",
-    "iendo",
-    // very common present/preterite endings (short list for recall)
+    // Latin verb endings (active + passive)
     "o",
     "as",
     "a",
-    "amos",
-    "an",
+    "amus",
+    "ant",
     "es",
-    "e",
-    "emos",
-    "en",
-    "í",
-    "iste",
-    "ió",
-    "imos",
-    "ieron",
-    // infinitive recovery helper
+    "et",
+    "emus",
+    "ent",
+    "is",
+    "it",
+    "imus",
+    "unt",
+    "tur",
+    "ntur", // 👈 added passive endings
+    // infinitive recovery
     "r",
     "ar",
     "er",
