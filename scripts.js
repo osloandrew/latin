@@ -1648,135 +1648,346 @@ function getCefrColor(cefrLevel) {
   }
 }
 
-// Utility function to generate word variations for verbs ending in -ere and handle adjective/noun forms
-function generateWordVariationsForSentences(word, pos) {
-  const variations = [];
-  const base = word.toLowerCase().trim();
+// Extended Latin morphology heuristic (drop-in)
+// Goal: generate likely surface forms to improve sentence matching.
+// Scope: present indicative (active+passive), imperatives, some perfects,
+// all 5 declensions (incl. common neuters), more adjective patterns,
+// key irregular verbs and common compounds.
+// Returns: unique, lowercased forms; duplicates removed.
 
-  // Latin reflexive pronouns (slightly different from Spanish/Norwegian)
+function generateWordVariationsForSentences(word, pos) {
+  const base = (word || "").toLowerCase().trim();
+  const out = [];
+  const seen = new Set();
+  const add = (f) => {
+    if (!f) return;
+    const s = f.toLowerCase().trim();
+    if (!s) return;
+    if (!seen.has(s)) {
+      seen.add(s);
+      out.push(s);
+    }
+  };
+
+  // Lightweight char-normalization: handle macrons if present
+  const demacron = (s) =>
+    s
+      .replace(/ā/g, "a")
+      .replace(/ē/g, "e")
+      .replace(/ī/g, "i")
+      .replace(/ō/g, "o")
+      .replace(/ū/g, "u");
+
+  const parts = base.split(",").map((p) => demacron(p).trim());
+  // Typical verb entries like "amo, amare" or "amo, amare, amavi, amatum"
+  const firstPart = parts[0] || base;
+  const infinitiveGuess =
+    parts.find((p) =>
+      /(are|ere|ire|ferre|esse|posse|velle|nolle|malle|ire|fieri)$/.test(p)
+    ) || parts[1] || parts[0] || base;
+
   const reflexivePronouns = ["me", "te", "se", "nos", "vos"];
 
-  // Handle verbs (very simplified endings by conjugation group)
+  // Tiny helpers
+  const ends = (s, suf) => s.endsWith(suf);
+  const withoutEnd = (s, n) => s.slice(0, -n);
+  const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+
+  // Try to detect neuter by nominative endings where possible
+  const looksNeuter2nd = ends(base, "um");
+  const looksNeuter4th = ends(base, "u"); // cornu, genu
+  const looksNeuter3rdIstem = /(e|al|ar)$/.test(base); // mare, animal, calcar
+
+  // ------------------------------------------------------------------
+  // VERBS
+  // ------------------------------------------------------------------
   if (pos === "verb") {
-    const parts = base.split(",").map((p) => p.trim());
-    const infinitive = parts.length > 1 ? parts[1] : parts[0];
+    const inf = infinitiveGuess; // demacron applied
+    add(base);
+    if (inf !== base) add(inf);
 
-    // Always include the raw entry and the infinitive
-    variations.push(base);
-    if (infinitive !== base) variations.push(infinitive);
+    // Recognize and produce present indicative active and passive, imperatives, some participles
+    // Conjugation detection
+    const isFerre = ends(inf, "ferre");
+    const isEsse = inf === "esse";
+    const isPosse = inf === "posse";
+    const isVelle = inf === "velle";
+    const isNolle = inf === "nolle";
+    const isMalle = inf === "malle";
+    const isIre = inf === "ire" || /[a-z]+ire$/.test(inf); // includes compounds e.g., "abire"
+    const isFieri = inf === "fieri";
+    const isDare = inf === "dare"; // often irregular present "do, das..."
 
-    if (infinitive.endsWith("are")) {
-      const stem = infinitive.slice(0, -3);
-      variations.push(
-        stem + "o",
-        stem + "as",
-        stem + "at",
-        stem + "amus",
-        stem + "atis",
-        stem + "ant"
-      );
-    } else if (infinitive.endsWith("ere")) {
-      const stem = infinitive.slice(0, -3);
-      variations.push(
-        stem + "eo",
-        stem + "es",
-        stem + "et",
-        stem + "emus",
-        stem + "etis",
-        stem + "ent", // 2nd
-        stem + "o",
-        stem + "is",
-        stem + "it",
-        stem + "imus",
-        stem + "itis",
-        stem + "unt" // 3rd
-      );
-    } else if (infinitive.endsWith("ire")) {
-      const stem = infinitive.slice(0, -3);
-      variations.push(
-        stem + "io",
-        stem + "is",
-        stem + "it",
-        stem + "imus",
-        stem + "itis",
-        stem + "iunt"
-      );
+    // Handle irregular blocks first
+    if (isEsse) {
+      ["sum", "es", "est", "sumus", "estis", "sunt"].forEach(add);
+      // Compounds like adesse if entry is "adesse": derive present "adsum" etc.
+      if (/^[a-z]+esse$/.test(firstPart) || /^[a-z]+esse$/.test(inf)) {
+        const pref = inf.replace(/esse$/, "");
+        [pref + "sum", pref + "es", pref + "est", pref + "sumus", pref + "estis", pref + "sunt"].forEach(add);
+      }
+    } else if (isPosse) {
+      ["possum", "potes", "potest", "possumus", "potestis", "possunt"].forEach(add);
+    } else if (isVelle) {
+      ["volo", "vis", "vult", "volumus", "vultis", "volunt"].forEach(add);
+    } else if (isNolle) {
+      ["nolo", "non vis", "non vult", "nolumus", "non vultis", "nolunt"].forEach(add);
+      // Also common contracted 2nd pl: "non vultis" vs "nollitis" not standard; keep simple
+    } else if (isMalle) {
+      ["malo", "mavis", "mavult", "malumus", "mavultis", "malunt"].forEach(add);
+    } else if (isFerre) {
+      // ferre compounds: present is -fero
+      const stem = inf.replace(/ferre$/, "");
+      [stem + "fero", stem + "fers", stem + "fert", stem + "ferimus", stem + "fertis", stem + "ferunt"].forEach(add);
+    } else if (isFieri) {
+      ["fio", "fis", "fit", "fimus", "fitis", "fiunt"].forEach(add);
+    } else if (isIre) {
+      // ire compounds: present is -eo
+      const stem = inf.replace(/ire$/, "");
+      [stem + "eo", stem + "is", stem + "it", stem + "imus", stem + "itis", stem + "eunt"].forEach(add);
+    }
+
+    // Regular conjugations by infinitive
+    const addPresentActivePassive = (presentStem, themeVowel, thirdPlural) => {
+      // Active
+      [presentStem + "o", presentStem + "s", presentStem + "t", presentStem + "mus", presentStem + "tis", presentStem + thirdPlural].forEach(add);
+      // Passive
+      [presentStem + "or", presentStem + "ris", presentStem + "tur", presentStem + "mur", presentStem + "mini", presentStem + thirdPlural + "ur"].forEach(add);
+    };
+
+    // Imperatives
+    const addImperatives = (impSg, impPl) => [impSg, impPl].forEach(add);
+
+    const infNoMac = inf;
+    if (ends(infNoMac, "are")) {
+      const stem = withoutEnd(infNoMac, 3); // am-
+      addPresentActivePassive(stem + "a", "a", "nt"); // amo, amas...
+      addImperatives(stem + "a", stem + "ate"); // ama, amate
+      // Present participle
+      add(stem + "ans");
+      // Heuristic perfect for 1st: -avi set
+      ["avi", "avisti", "avit", "avimus", "avistis", "averunt"].forEach((pf) => add(stem + pf));
+    } else if (ends(infNoMac, "ere")) {
+      // Could be 2nd or 3rd; generate both to improve recall
+      const stem = withoutEnd(infNoMac, 3);
+
+      // 2nd: moneo pattern
+      addPresentActivePassive(stem + "e", "e", "nt"); // moneo, mones...
+      addImperatives(stem + "e", stem + "ete"); // mone, monete
+      add(stem + "ens"); // present participle
+      // Heuristic perfect for 2nd: -ui set
+      ["ui", "uisti", "uit", "uimus", "uistis", "uerunt"].forEach((pf) => add(stem + pf));
+
+      // 3rd: lego pattern
+      addPresentActivePassive(stem, "", "unt"); // lego, legis...
+      addImperatives(stem + "e", stem + "ite"); // lege, legite
+      add(stem + "ens");
+      // Heuristic perfect for 3rd: -i set
+      ["i", "isti", "it", "imus", "istis", "erunt"].forEach((pf) => add(stem + pf));
+    } else if (ends(infNoMac, "ire")) {
+      const stem = withoutEnd(infNoMac, 3); // aud-
+      addPresentActivePassive(stem + "i", "i", "unt"); // audio, audis...
+      addImperatives(stem + "i", stem + "ite"); // audi, audite
+      add(stem + "iens"); // present participle often -iens
+      // Heuristic perfect for 4th: -ivi and -ii sets
+      ["ivi", "ivisti", "ivit", "ivimus", "ivistis", "iverunt"].forEach((pf) => add(stem + pf));
+      ["ii", "isti", "iit", "iimus", "iistis", "ierunt"].forEach((pf) => add(stem + pf));
+    }
+
+    // Passive infinitives to help match sentences with passives
+    if (ends(infNoMac, "are")) add(withoutEnd(infNoMac, 1) + "i"); // amari
+    else if (ends(infNoMac, "ere")) add(withoutEnd(infNoMac, 1) + "i"); // moneri or legi (both produced; acceptable for matching)
+    else if (ends(infNoMac, "ire")) add(withoutEnd(infNoMac, 1) + "i"); // audiri
+
+    // Basic deponent support: if entry looks like "hortari"/"loqui"/"sequor", add common present forms
+    if (/or$/.test(firstPart) || /(ari|eri|i|iri)$/.test(infNoMac)) {
+      // super-light heuristic; include -or set
+      const depStem =
+        ends(infNoMac, "ari") ? withoutEnd(infNoMac, 3) + "a" :
+        ends(infNoMac, "eri") ? withoutEnd(infNoMac, 3) + "e" :
+        ends(infNoMac, "iri") ? withoutEnd(infNoMac, 3) + "i" :
+        ends(infNoMac, "i")   ? withoutEnd(infNoMac, 1) :
+        infNoMac;
+      [depStem + "or", depStem + "ris", depStem + "tur", depStem + "mur", depStem + "mini", depStem + "ntur"].forEach(add);
+    }
+
+    return out;
+  }
+
+  // ------------------------------------------------------------------
+  // NOUNS
+  // ------------------------------------------------------------------
+  if (pos === "noun") {
+    add(base);
+
+    // 1st declension: -a (mostly fem.)
+    if (ends(base, "a")) {
+      const st = withoutEnd(base, 1);
+      [st + "ae", st + "am", st + "arum", st + "is", st + "as", st + "a"].forEach(add); // include nom/acc pl -ae/-as; keep bare -a
+      return uniq(out);
+    }
+
+    // 2nd declension:
+    if (ends(base, "us")) {
+      // masc -us like dominus, but beware 4th -us below
+      const st = withoutEnd(base, 2);
+      [st + "i", st + "o", st + "um", st + "e", st + "orum", st + "is", st + "os"].forEach(add);
+      return uniq(out);
+    }
+    if (looksNeuter2nd) {
+      // neuter -um: bellum
+      const st = withoutEnd(base, 2);
+      [st + "i", st + "o", st + "um", st + "a", st + "orum", st + "is"].forEach(add); // pl nom/acc -a
+      return uniq(out);
+    }
+
+    // 4th declension: -us masc and -u neuter
+    if (ends(base, "us")) {
+      const st = withoutEnd(base, 2);
+      // Try 4th as well as 2nd already handled; include 4th shapes to increase recall
+      [st + "us", st + "ui", st + "um", st + "uum", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+    if (looksNeuter4th) {
+      // cornu, genu
+      const st = withoutEnd(base, 1);
+      [st + "us", st + "u", st + "ua", st + "uum", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // 5th declension: -es with gen -ei; common: res, dies
+    if (ends(base, "es")) {
+      const st = withoutEnd(base, 2);
+      [st + "ei", st + "em", st + "e", st + "erum", st + "ebus", st + "es"].forEach(add);
+      return uniq(out);
+    }
+
+    // 3rd declension buckets
+    // a) i-stem neuters: mare, animal, calcar → pl -ia, gen pl -ium
+    if (looksNeuter3rdIstem) {
+      const st = /(e|al|ar)$/.test(base) ? base.replace(/(e|al|ar)$/, "") : base;
+      [base, st + "is", st + "i", base, st + "e", st + "ia", st + "ium", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // b) -ter family: pater/mater/frater → patr-/matr-/fratr-
+    if (ends(base, "ter")) {
+      const st = base.replace(/ter$/, "tr");
+      [st + "is", st + "i", st + "em", st + "e", st + "es", st + "um", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // c) -or (amor, orator) → stem -or-
+    if (ends(base, "or")) {
+      const st = base; // amor → amor-
+      [st + "is", st + "i", st + "em", st + "e", st + "es", st + "um", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // d) -x often → stem in -c-/g- (rex→reg-). Use a permissive guess rex→reg-
+    if (ends(base, "x")) {
+      const st = base.replace(/x$/, "c"); // covers lex→lec- (close to leg-), rex→rec- (close to reg-)
+      // Include both c and g stems to hedge
+      const gst = base.replace(/x$/, "g");
+      [st + "is", st + "i", st + "em", st + "e", st + "es", st + "um", st + "ibus",
+       gst + "is", gst + "i", gst + "em", gst + "e", gst + "es", gst + "um", gst + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // e) -is nominative like civis (i-stem m/f)
+    if (ends(base, "is")) {
+      const st = withoutEnd(base, 2);
+      // i-stem: gen pl -ium
+      [st + "is", st + "i", st + "em", st + "e", st + "es", st + "ium", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // f) generic 3rd fallback: produce a consonant-stem style by chopping last letter
+    const st = base.length > 2 ? base.slice(0, -1) : base;
+    [st + "is", st + "i", st + "em", st + "e", st + "es", st + "um", st + "ibus"].forEach(add);
+    return uniq(out);
+  }
+
+  // ------------------------------------------------------------------
+  // ADJECTIVES
+  // ------------------------------------------------------------------
+  if (pos === "adjective") {
+    add(base);
+
+    // 1st/2nd decl -us adjectives: bonus
+    if (ends(base, "us")) {
+      const st = withoutEnd(base, 2);
+      // regular set
+      [st + "a", st + "um", st + "i", st + "ae", st + "os", st + "as", st + "orum", st + "arum"].forEach(add);
+      // also include neuter pl -a
+      [st + "a"].forEach(add);
+      return uniq(out);
+    }
+
+    // -er adjectives: two patterns exist. Generate both families to ensure recall.
+    if (ends(base, "er")) {
+      const trunk = withoutEnd(base, 2);     // pulch-
+      const keepEStem = base.replace(/er$/, "er"); // miser → miser-
+      // e-drop family (pulcher → pulchra, pulchrum)
+      [trunk + "ra", trunk + "rum", trunk + "ri", trunk + "rae", trunk + "ros", trunk + "ras", trunk + "rorum", trunk + "rarum"].forEach(add);
+      // e-keep family (miser → misera, miserum)
+      const k = withoutEnd(base, 2); // mis-
+      [k + "era", k + "erum", k + "eri", k + "erae", k + "eros", k + "eras", k + "erorum", k + "erarum"].forEach(add);
+      return uniq(out);
+    }
+
+    // 3rd decl -is adjectives: fortis, dulce → forte
+    if (ends(base, "is")) {
+      const st = withoutEnd(base, 2);
+      // two-termination pattern fortis, forte
+      [st + "e", st + "es", st + "ia", st + "ium", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // Participial -ns adjectives: amans, vehemens → gen -ntis
+    if (ends(base, "ns")) {
+      const st = withoutEnd(base, 2) + "nt";
+      [st + "is", st + "i", st + "em", st + "e", st + "es", st + "ia", st + "ium", st + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // Comparatives: -ior (m/f), -ius (n)
+    if (/(ior|ius)$/.test(base)) {
+      const core = base.replace(/ius$/, "ior");
+      [core, core + "es", core.replace(/ior$/, "ius"), core + "um", core + "ibus"].forEach(add);
+      return uniq(out);
+    }
+
+    // Superlatives: -issimus, -errimus, -illimus
+    if (/issimus$/.test(base) || /errimus$/.test(base) || /illimus$/.test(base)) {
+      const st = base.replace(/(issimus|errimus|illimus)$/, "$1");
+      const fem = base.replace(/us$/, "a");
+      const neut = base.replace(/us$/, "um");
+      [fem, neut, base.replace(/us$/, "i"), fem.replace(/a$/, "ae"),
+       base.replace(/us$/, "os"), fem.replace(/a$/, "as"),
+       base.replace(/us$/, "orum"), fem.replace(/a$/, "arum")].forEach(add);
+      return uniq(out);
+    }
+
+    // Fallback: leave base only
+    return uniq(out);
+  }
+
+  // ------------------------------------------------------------------
+  // Two-word reflexive phrases like "defendo me"
+  // ------------------------------------------------------------------
+  if (word.split(" ").length === 2) {
+    const [w1, w2] = word.split(" ");
+    if (reflexivePronouns.includes(w2.toLowerCase().trim())) {
+      add(word);
+      add(`${w1} ${w2}`);
+      return out;
     }
   }
-  // Handle nouns (very simplified declension endings)
-  else if (pos === "noun") {
-    if (base.endsWith("a")) {
-      // 1st declension: rosa
-      const stem = base.slice(0, -1);
-      variations.push(
-        base, // rosa
-        stem + "ae", // rosae
-        stem + "am", // rosam
-        stem + "arum", // rosarum
-        stem + "is", // rosis
-        stem + "as" // rosas
-      );
-    } else if (base.endsWith("us") || base.endsWith("um")) {
-      // 2nd declension: dominus / bellum
-      const stem = base.replace(/us$|um$/, "");
-      variations.push(
-        base,
-        stem + "i", // domini
-        stem + "o", // domino
-        stem + "um", // dominum
-        stem + "orum", // dominorum
-        stem + "os", // dominos
-        stem + "is" // dominis
-      );
-    } else if (base.endsWith("is")) {
-      // 3rd declension genitive: civis
-      const stem = base.slice(0, -2);
-      variations.push(
-        base,
-        stem + "em", // civem
-        stem + "es", // cives
-        stem + "um", // civum
-        stem + "ibus" // civibus
-      );
-    } else {
-      variations.push(base);
-    }
-  }
 
-  // Handle adjectives (basic agreement endings)
-  else if (pos === "adjective") {
-    if (base.endsWith("us")) {
-      const stem = base.slice(0, -2);
-      variations.push(
-        base, // bonus
-        stem + "a", // bona
-        stem + "um", // bonum
-        stem + "i", // boni
-        stem + "ae", // bonae
-        stem + "os", // bonos
-        stem + "as", // bonas
-        stem + "orum", // bonorum
-        stem + "arum" // bonarum
-      );
-    } else {
-      variations.push(base);
-    }
-  }
-
-  // Handle reflexive phrases (very rough Latinization)
-  else if (word.split(" ").length === 2) {
-    const [verb, pronoun] = word.split(" ");
-    if (reflexivePronouns.includes(pronoun)) {
-      variations.push(word, verb + " " + pronoun);
-    }
-  }
-
-  // Always include the base form
-  if (!variations.includes(base)) {
-    variations.push(base);
-  }
-
-  return variations;
+  // Default: return at least the base
+  add(base);
+  return out;
 }
 
 // Render a single sentence
